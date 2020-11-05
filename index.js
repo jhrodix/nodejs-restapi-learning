@@ -3,12 +3,16 @@ const bodyParser = require('body-parser');
 
 //importando pg para conexion y consulta de base de datos postgres
 const {Client}=require('pg');
+//configurando la conexion a la base de datos en postgres
 client = new Client({
     host: 'localhost',
     user: 'postgres',
-    password: '####',
+    password: 'xxxxx',
     database: 'usuarios',
 });
+
+//conectandose a la base de datos
+client.connect()
 
 //creando la aplicacion de express
 const express = require("express")
@@ -33,7 +37,13 @@ let respuesta = {
 
 /* Respondiendo a solicitud get en la raiz */
 app.get('/', function(req, res) {
- respuesta = {
+
+    client.query('SELECT nombre,apellido from usuarios where nombre=$1::text', ['Juan'], (err, res) => {
+        console.log(err ? err.stack : res.rows[0].apellido) // Hello World!
+        //client.end()
+      })
+
+respuesta = {
   error: true,
   codigo: 200,
   mensaje: 'Aplicacion creada para probar express y postgres'
