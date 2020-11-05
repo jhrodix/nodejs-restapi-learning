@@ -5,4 +5,4 @@
 - Para instalar body-parser: npm install body-parser --save
 - Para instalar pg: npm install pg --save
 
-Ejercicio tomado de [aqui] (https://medium.com/@asfo/desarrollando-una-sencilla-api-rest-con-nodejs-y-express-cab0813f7e4b)
+Ejercicio tomado de [aqui](https://medium.com/@asfo/desarrollando-una-sencilla-api-rest-con-nodejs-y-express-cab0813f7e4b)
