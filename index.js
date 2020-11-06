@@ -47,82 +47,89 @@ app.get('/usuario/:usuario', function (req, res) {
     {
         if(res.rows.length>0)
         {
-        usuario.nombre = res.rows[0].nombre;
-        usuario.apellido = res.rows[0].apellido;
+			usuario.nombre = res.rows[0].nombre;
+			usuario.apellido = res.rows[0].apellido;
         }
         else
             usuario.nombre = '';
-    });
 
-    if(usuario.nombre=='')
-    {
-        respuesta = {
-            error: true,
-            codigo: 200,
-            mensaje: 'todo salio mal'};
-    }
-    else
-    {
-        respuesta = {
-            error: false,
-            codigo: 200,
-            mensaje: 'todo salio bien',
-            respuesta: usuario
-        };
-    }
-    res.send(respuesta);
+		if(usuario.nombre=='')
+		{
+			respuesta = {
+				error: true,
+				codigo: 200,
+				mensaje: 'todo salio mal'
+			};
+		}
+		else
+		{
+			respuesta = {
+				error: false,
+				codigo: 200,
+				mensaje: 'todo salio bien',
+				respuesta: usuario
+			};
+		}
+		res.send(respuesta);
+	});
 
 });
 
 /* creando un nuevo usuario */
 app.post('/usuario', function (req, res) {
-    client.query('insert into usuarios values($1::text,$2::text)', [req.body.nombre,req.body.apellido], (err, res) => {})
-    /*codigo para validar que el insert se hizo bien*/
-    let respuesta = 
-    {
-        error:false,
-        codigo:200,
-        mensaje:'usuario creado',
-        respuesta: {
-            nombre: req.body.nombre,
-            apellido: req.body.apellido
-        }
-    }
-    res.send(respuesta);
+	client.query('insert into usuarios values($1::text,$2::text)', [req.body.nombre,req.body.apellido], (err, res) =>
+	{
+		/*codigo para validar que el insert se hizo bien*/
+		let respuesta = 
+		{
+			error:false,
+			codigo:200,
+			mensaje:'usuario creado',
+			respuesta: {
+				nombre: req.body.nombre,
+				apellido: req.body.apellido
+			}
+		}
+		res.send(respuesta);
+	});
 });
 
 /*actualizando un usuario*/
 app.put('/usuario/:usuario', function (req, res) {
-    client.query('update usuarios set nombre=$1::text,apellido=$2::text where nombre=$3::text', [req.body.nombre,req.body.apellido,req.params.usuario], (err, res) => {})
-    /*falta agregar codigo para validar si la consulta si hizo bien*/
-    let respuesta = 
-    {
-        error:false,
-        codigo:200,
-        mensaje:'usuario modificado',
-        respuesta: {
-            nombre: req.body.nombre,
-            apellido: req.body.apellido
-        }
-    }
-    res.send(respuesta);
+	client.query('update usuarios set nombre=$1::text,apellido=$2::text where nombre=$3::text', [req.body.nombre,req.body.apellido,req.params.usuario], (err, res) =>
+	{
+		/*falta agregar codigo para validar si la consulta si hizo bien*/
+		let respuesta = 
+		{
+			error:false,
+			codigo:200,
+			mensaje:'usuario modificado',
+			respuesta: {
+				nombre: req.body.nombre,
+				apellido: req.body.apellido
+			}
+		}
+		res.send(respuesta);
+	});
 });
 
 /*elimina un usuario del sistema*/
 app.delete('/usuario', function (req, res) {
-    client.query('delete from usuarios where nombre=$1::text and apellido=$2::text', [req.body.nombre,req.body.apellido], (err, res) => {})
-    /*agregar codigo para validar si se elimino el registro*/
-    let respuesta = 
-    {
-        error:false,
-        codigo:200,
-        mensaje:'usuario eliminado',
-        respuesta: {
-            nombre: req.body.nombre,
-            apellido: req.body.apellido
-        }
-    }
-    res.send(respuesta);
+	client.query('delete from usuarios where nombre=$1::text and apellido=$2::text', [req.body.nombre,req.body.apellido], (err, res) =>
+	{
+		/*agregar codigo para validar si se elimino el registro*/
+		let respuesta = 
+		{
+			error:false,
+			codigo:200,
+			mensaje:'usuario eliminado',
+			respuesta: {
+				nombre: req.body.nombre,
+				apellido: req.body.apellido
+			}
+		}
+		res.send(respuesta);
+	});
 });
 
 /*mostrar error en caso de no existir la url*/
