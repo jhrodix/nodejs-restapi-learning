@@ -31,7 +31,7 @@ app.get('/', function(req, res) {
     });
 
 /* variables globales*/     
-var usuario = {nombre:'',apellido:''},respuesta={};
+var usuario = {nombre:'',apellido:''}, respuesta={};
 
 /*conectandome a la base de datos*/
 client.connect(
@@ -45,6 +45,7 @@ app.get('/usuario/:usuario', function (req, _res) {
     
     client.query('SELECT nombre,apellido from usuarios where nombre=$1::text', [req.params.usuario], (err, res) => 
     {
+console.log('length='+res.rows.length);
         if(res.rows.length>0)
         {
 			usuario.nombre = res.rows[0].nombre;
@@ -52,7 +53,7 @@ app.get('/usuario/:usuario', function (req, _res) {
         }
         else
             usuario.nombre = '';
-
+console.log('nombre='+usuario.nombre);
 		if(usuario.nombre=='')
 		{
 			respuesta = {
