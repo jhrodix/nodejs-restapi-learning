@@ -41,7 +41,7 @@ client.connect(
     });
 
 /* Respondiendo a solicitud get en la ruta /usuario */
-app.get('/usuario/:usuario', function (req, res) {
+app.get('/usuario/:usuario', function (req, _res) {
     
     client.query('SELECT nombre,apellido from usuarios where nombre=$1::text', [req.params.usuario], (err, res) => 
     {
@@ -70,13 +70,13 @@ app.get('/usuario/:usuario', function (req, res) {
 				respuesta: usuario
 			};
 		}
-		res.send(respuesta);
+		_res.send(respuesta);
 	});
 
 });
 
 /* creando un nuevo usuario */
-app.post('/usuario', function (req, res) {
+app.post('/usuario', function (req, _res) {
 	client.query('insert into usuarios values($1::text,$2::text)', [req.body.nombre,req.body.apellido], (err, res) =>
 	{
 		/*codigo para validar que el insert se hizo bien*/
@@ -90,12 +90,12 @@ app.post('/usuario', function (req, res) {
 				apellido: req.body.apellido
 			}
 		}
-		res.send(respuesta);
+		_res.send(respuesta);
 	});
 });
 
 /*actualizando un usuario*/
-app.put('/usuario/:usuario', function (req, res) {
+app.put('/usuario/:usuario', function (req, _res) {
 	client.query('update usuarios set nombre=$1::text,apellido=$2::text where nombre=$3::text', [req.body.nombre,req.body.apellido,req.params.usuario], (err, res) =>
 	{
 		/*falta agregar codigo para validar si la consulta si hizo bien*/
@@ -109,12 +109,12 @@ app.put('/usuario/:usuario', function (req, res) {
 				apellido: req.body.apellido
 			}
 		}
-		res.send(respuesta);
+		_res.send(respuesta);
 	});
 });
 
 /*elimina un usuario del sistema*/
-app.delete('/usuario', function (req, res) {
+app.delete('/usuario', function (req, _res) {
 	client.query('delete from usuarios where nombre=$1::text and apellido=$2::text', [req.body.nombre,req.body.apellido], (err, res) =>
 	{
 		/*agregar codigo para validar si se elimino el registro*/
@@ -128,7 +128,7 @@ app.delete('/usuario', function (req, res) {
 				apellido: req.body.apellido
 			}
 		}
-		res.send(respuesta);
+		_res.send(respuesta);
 	});
 });
 
