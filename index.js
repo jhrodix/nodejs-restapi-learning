@@ -8,7 +8,7 @@ const {Client}=require('pg');
 client = new Client({
     host: 'localhost',
     user: 'postgres',
-    password: 'motagua2020*+-',
+    password: 'xxxxxx',
     database: 'usuarios',
 });
 
