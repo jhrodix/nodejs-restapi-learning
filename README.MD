@@ -1,5 +1,5 @@
 # Aprendiendo a crear restful APIs con **NodeJS**
-## utilizando la libreria **Express** y **body-parser**
+## utilizando la libreria **Express** y **pg**
 
 - Para instalar Express y guardar una copia local: npm install express --save
 - Para instalar body-parser: npm install body-parser --save
@@ -7,24 +7,24 @@
 
 ### ¿Que se necesita para continuar con el tutorial?
 - Necesitas saber HTML porque internet funciona con HTML.
-- Necesitas saber CSS para buen aspecto a la pagina.
+- Necesitas saber CSS para darle un buen aspecto a la pagina.
 - Necesitas saber javascript para darle dinamismo a la pagina
   - es importante saber **JSON=javascript object notation**
   - ejemplo:
     - ```json {"nombre":"carlos","apellido":"perez","edad":45,"libros":["montecristo","cien años de soledad","peter pan"],"familiares":[{"nombre":"margarito","apellido":"perez"},{"nombre":"jon"}]} ```
 - Necesitas un framework para javascript tanto para frontend y backend
-  - para frontend puede ser angularjs.
-  - para backend puede ser express.
+  - para frontend puede ser **Angularjs**.
+  - para backend puede ser **Express**.
   - Nota: es importante que sepas que existen muchas librerias y herramientas para front y backend.
-- Necesitas un base de datos donde guardar
+- Necesitas una base de datos donde guardar
   - para este caso vamos a utilizar **Postgresql**
 
 ### ¿De que se compone un proyecto web?
-cuando se crea un proyecto web con rest api; significa que el esta dividido en 2 partes:
-- front end
+cuando se crea un proyecto web con rest api, significa que el proyecto esta dividido en 2 partes:
+- Front end
   - es el conjunto de paginas web de un sitio que interactuan con el usuario.
   - se encarga de realizar solicitudes json al backend con el objetivo de responder al usuario.
-- backend
+- Backend
   - el backend **restful-api** es la aplicacion web que recibe solicitudes (requests) con contenido json y devuelve respuestas con contenido json. las solicitudes pueden ser 4:
     - GET: sirve para obtener un objeto en formato json.
     - POST: sirve para crear un nuevo objeto
