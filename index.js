@@ -8,7 +8,7 @@ const {Client}=require('pg');
 client = new Client({
     host: 'localhost',
     user: 'postgres',
-    password: 'xxxxxx',
+    password: 'xxxxx',
     database: 'usuarios',
 });
 
@@ -31,62 +31,59 @@ app.get('/', function(req, res) {
     });
 
 /* variables globales*/     
-var usuario = {nombre:'',apellido:''}, respuesta={};
+//var usuario = {nombre:'',apellido:''}, respuesta={};
 
 /*conectandome a la base de datos*/
 client.connect(
     function(err){ 
         if(err) {return ;} 
-        console.log("Connected"); 
+        console.log("Connected to database!"); 
     });
 
 /* Respondiendo a solicitud get en la ruta /usuario */
 app.get('/usuario/:usuario', function (req, _res) {
     
     client.query('SELECT nombre,apellido from usuarios where nombre=$1::text', [req.params.usuario], (err, res) => 
-    {
-console.log('length='+res.rows.length);
-        if(res.rows.length>0)
-        {
-			usuario.nombre = res.rows[0].nombre;
-			usuario.apellido = res.rows[0].apellido;
-        }
-        else
-            usuario.nombre = '';
-console.log('nombre='+usuario.nombre);
-		if(usuario.nombre=='')
-		{
-			respuesta = {
-				error: true,
-				codigo: 200,
-				mensaje: 'todo salio mal'
-			};
-		}
-		else
-		{
+    {	
+		/*si el usuario no existe*/
+		if(res.rows.length>0)
+        {	
+			console.log('GET buscando usuario');
 			respuesta = {
 				error: false,
 				codigo: 200,
 				mensaje: 'todo salio bien',
-				respuesta: usuario
+				usuario: {
+					nombre : res.rows[0].nombre,
+					apellido : res.rows[0].apellido
+				}
 			};
 		}
+		else
+		{
+			console.log('GET usuario no encontrado');
+			respuesta ={
+				error: true,
+				codigo: 400,
+				mensaje: 'El usuario no existe en la base de datos'
+			};
+		}	
 		_res.send(respuesta);
 	});
-
 });
 
 /* creando un nuevo usuario */
 app.post('/usuario', function (req, _res) {
 	client.query('insert into usuarios values($1::text,$2::text)', [req.body.nombre,req.body.apellido], (err, res) =>
 	{
+		console.log("POST creando un nuevo usuario")
 		/*codigo para validar que el insert se hizo bien*/
 		let respuesta = 
 		{
 			error:false,
 			codigo:200,
 			mensaje:'usuario creado',
-			respuesta: {
+			usuario: {
 				nombre: req.body.nombre,
 				apellido: req.body.apellido
 			}
@@ -99,13 +96,14 @@ app.post('/usuario', function (req, _res) {
 app.put('/usuario/:usuario', function (req, _res) {
 	client.query('update usuarios set nombre=$1::text,apellido=$2::text where nombre=$3::text', [req.body.nombre,req.body.apellido,req.params.usuario], (err, res) =>
 	{
+		console.log("PUT actualizando usuario")
 		/*falta agregar codigo para validar si la consulta si hizo bien*/
 		let respuesta = 
 		{
 			error:false,
 			codigo:200,
 			mensaje:'usuario modificado',
-			respuesta: {
+			usuario: {
 				nombre: req.body.nombre,
 				apellido: req.body.apellido
 			}
@@ -118,13 +116,14 @@ app.put('/usuario/:usuario', function (req, _res) {
 app.delete('/usuario', function (req, _res) {
 	client.query('delete from usuarios where nombre=$1::text and apellido=$2::text', [req.body.nombre,req.body.apellido], (err, res) =>
 	{
+		console.log("DELETE eliminando usuario")
 		/*agregar codigo para validar si se elimino el registro*/
 		let respuesta = 
 		{
 			error:false,
 			codigo:200,
 			mensaje:'usuario eliminado',
-			respuesta: {
+			usuario: {
 				nombre: req.body.nombre,
 				apellido: req.body.apellido
 			}
@@ -136,10 +135,10 @@ app.delete('/usuario', function (req, _res) {
 /*mostrar error en caso de no existir la url*/
 app.use(function(req, res, next) {
  respuesta = {
-  error: true, 
-  codigo: 404, 
-  mensaje: 'URL no encontrada'
- };
+				error: true, 
+				codigo: 404, 
+				mensaje: 'URL no encontrada'
+			};
  res.status(404).send(respuesta);
 });
 

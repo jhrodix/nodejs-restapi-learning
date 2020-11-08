@@ -1,0 +1,26 @@
+### Solicitud para obtener info de usuario
+GET http://localhost:3000/usuario/prueba HTTP/1.1
+### Solicitud para insertar usuario
+POST http://localhost:3000/usuario HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre" : "prueba",
+    "apellido" : "prueba"
+}
+### Solicitud para actualizar
+PUT http://localhost:3000/usuario/prueba HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "prueba",
+    "apellido":"prueba"
+}
+### Solicitud para eliminar usuario
+DELETE http://localhost:3000/usuario HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre" : "prueba",
+    "apellido" : "prueba"
+}
