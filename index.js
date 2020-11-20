@@ -8,7 +8,7 @@ const {Client}=require('pg');
 client = new Client({
     host: 'localhost',
     user: 'postgres',
-    password: 'xxxxx',
+    password: 'xxxxxxx',
     database: 'usuarios',
 });
 
@@ -41,9 +41,9 @@ client.connect(
     });
 
 /* Respondiendo a solicitud get en la ruta /usuario */
-app.get('/usuario/:usuario', function (req, _res) {
+app.get('/usuario/:usuario/:apellido', function (req, _res) {
     
-    client.query('SELECT nombre,apellido from usuarios where nombre=$1::text', [req.params.usuario], (err, res) => 
+    client.query('SELECT nombre,apellido from usuarios where nombre=$1::text and apellido=$2::text', [req.params.usuario,req.params.apellido], (err, res) => 
     {	
 		/*si el usuario existe*/
 		if(res.rows.length>0)
@@ -113,8 +113,8 @@ app.post('/usuario', function (req, _res) {
 });
 
 /*actualizando un usuario*/
-app.put('/usuario/:usuario', function (req, _res) {
-	client.query('update usuarios set nombre=$1::text,apellido=$2::text where nombre=$3::text', [req.body.nombre,req.body.apellido,req.params.usuario], (err, res) =>
+app.put('/usuario/:usuario/:apellido', function (req, _res) {
+	client.query('update usuarios set nombre=$1::text,apellido=$2::text where nombre=$3::text and apellido=$4::text', [req.body.nombre,req.body.apellido,req.params.usuario,req.params.apellido], (err, res) =>
 	{
 		console.log("PUT actualizando usuario")
 		/*falta agregar codigo para validar si la consulta si hizo bien*/

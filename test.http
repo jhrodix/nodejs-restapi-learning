@@ -1,5 +1,5 @@
 ### Solicitud para obtener info de usuario
-GET http://localhost:3000/usuario/prueba HTTP/1.1
+GET http://localhost:3000/usuario/prueba/prueba HTTP/1.1
 ### Solicitud para insertar usuario
 POST http://localhost:3000/usuario HTTP/1.1
 Content-Type: application/json
@@ -9,7 +9,7 @@ Content-Type: application/json
     "apellido" : "prueba"
 }
 ### Solicitud para actualizar
-PUT http://localhost:3000/usuario/prueba HTTP/1.1
+PUT http://localhost:3000/usuario/prueba/prueba HTTP/1.1
 Content-Type: application/json
 
 {
