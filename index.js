@@ -41,11 +41,11 @@ client.connect(
     });
 
 /* Respondiendo a solicitud get en la ruta /usuario */
-app.get('/usuario/:usuario', (req, _res) => {
+app.get('/usuario/:usuario/:apellido', function (req, _res) {
     
-    client.query('SELECT nombre,apellido from usuarios where nombre=$1::text', [req.params.usuario], (err, res) => 
+    client.query('SELECT nombre,apellido from usuarios where nombre=$1::text and apellido=$2::text', [req.params.usuario,req.params.apellido], (err, res) => 
     {	
-		/*si el usuario no existe*/
+		/*si el usuario existe*/
 		if(res.rows.length>0)
         {	
 			console.log('GET buscando usuario');
@@ -74,27 +74,47 @@ app.get('/usuario/:usuario', (req, _res) => {
 
 /* creando un nuevo usuario */
 app.post('/usuario', function (req, _res) {
-	client.query('insert into usuarios values($1::text,$2::text)', [req.body.nombre,req.body.apellido], (err, res) =>
+	client.query('select * from usuarios where nombre=$1::text and apellido=$2::text',[req.body.nombre,req.body.apellido], (err,res_select) =>
 	{
-		console.log("POST creando un nuevo usuario")
-		/*codigo para validar que el insert se hizo bien*/
-		let respuesta = 
-		{
-			error:false,
-			codigo:200,
-			mensaje:'usuario creado',
-			usuario: {
-				nombre: req.body.nombre,
-				apellido: req.body.apellido
-			}
+		if(res_select.rows.length==0){
+			client.query('insert into usuarios values($1::text,$2::text)', [req.body.nombre,req.body.apellido], (err, res) =>
+			{
+				console.log("POST creando un nuevo usuario")
+				/*codigo para validar que el insert se hizo bien*/
+				let respuesta = 
+				{
+					error:false,
+					codigo:200,
+					mensaje:'usuario creado',
+					usuario: {
+						nombre: req.body.nombre,
+						apellido: req.body.apellido
+					}
+				}
+				_res.send(respuesta);
+			});
 		}
-		_res.send(respuesta);
+		else
+		{
+			console.log("usuario ya existe");
+			let respuesta = 
+				{
+					error:true,
+					codigo:401,
+					mensaje:'usuario no creado',
+					usuario: {
+						nombre: req.body.nombre,
+						apellido: req.body.apellido
+					}
+				}
+			_res.send(respuesta);
+		}
 	});
 });
 
 /*actualizando un usuario*/
-app.put('/usuario/:usuario', function (req, _res) {
-	client.query('update usuarios set nombre=$1::text,apellido=$2::text where nombre=$3::text', [req.body.nombre,req.body.apellido,req.params.usuario], (err, res) =>
+app.put('/usuario/:usuario/:apellido', function (req, _res) {
+	client.query('update usuarios set nombre=$1::text,apellido=$2::text where nombre=$3::text and apellido=$4::text', [req.body.nombre,req.body.apellido,req.params.usuario,req.params.apellido], (err, res) =>
 	{
 		console.log("PUT actualizando usuario")
 		/*falta agregar codigo para validar si la consulta si hizo bien*/
