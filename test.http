@@ -1,26 +1,92 @@
 ### Solicitud para obtener info de usuario
-GET http://localhost:3000/usuario/prueba HTTP/1.1
+GET http://localhost:3000/usuario/lionel HTTP/1.1
 ### Solicitud para insertar usuario
 POST http://localhost:3000/usuario HTTP/1.1
 Content-Type: application/json
 
 {
-    "nombre" : "prueba",
-    "apellido" : "prueba"
+    "nombre" : "lionel",
+    "apellido" : "messi"
 }
 ### Solicitud para actualizar
-PUT http://localhost:3000/usuario/prueba HTTP/1.1
+PUT http://localhost:3000/usuario/lionel HTTP/1.1
 Content-Type: application/json
 
 {
-    "nombre": "prueba",
-    "apellido":"prueba"
+    "nombre": "lionel",
+    "apellido":"barca"
 }
 ### Solicitud para eliminar usuario
 DELETE http://localhost:3000/usuario HTTP/1.1
 Content-Type: application/json
 
 {
-    "nombre" : "prueba",
-    "apellido" : "prueba"
+    "nombre" : "lionel",
+    "apellido" : "messi"
 }
+### Solicitud para obtener info de equipos
+GET http://localhost:3000/equipos/motagua HTTP/1.1
+### Solicitud para insertar equipos
+POST http://localhost:3000/equipos HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "motagua",
+    "pais": "honduras",
+    "creacion": "1986-07-25",
+    "logo": "aguila azul",
+    "ganados": "17"  
+    
+}
+###Solicitud para actualizar un equipo
+PUT http://localhost:3000/equipos/motagua HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "motagua",
+    "pais": "panama",
+    "creacion": "1986-07-25",
+    "logo": "aguila roja",
+    "ganados": "17"   
+}
+### Solicitud para eliminar equipos
+DELETE http://localhost:3000/equipos HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "motagua"
+}
+### Solicitud para obtener informacion de un jugador
+GET http://localhost:3000/jugadores/rubilio/castillo HTTP/1.1
+### Solicitud para agregar jugadores
+POST http://localhost:3000/jugadores HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "rubilio",
+    "apellido": "castillo",
+    "nacimiento": "1990-06-22",
+    "nacionalidad": "hondureño",
+    "equipo": "motagua"
+}
+### Solicitud para actualizar jugador
+PUT http://localhost:3000/jugadores/rubilio/castillo HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "rubilio",
+    "apellido": "castillo",
+    "nacimiento": "1990-06-22",
+    "nacionalidad": "mexicano",
+    "equipo": "Morelia"  
+}
+### Solicitud para eliminar jugador
+DELETE http://localhost:3000/jugadores HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "rubilio",
+    "apellido": "castillo"
+}
+### Solicitud Raiz
+GET http://localhost:3000/ HTTP/1.1
