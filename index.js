@@ -159,19 +159,27 @@ app.get('/equipos/:equipo', function(req, _res){
 		//si el equipo existe
 		if(res.rows.length>0)
 		{
-			console.log('GET buscando equipo');
-			respuesta = {
-				error: false,
-				codigo: 200,
-				mensaje: 'Todo salio bien',
-				equipo: {
-					nombre: res.rows[0].nombre,
-					pais: res.rows[0].pais,
-					creacion: res.rows[0].creacion,
-					logo: res.rows[0].logo,
-					ganados: res.rows[0].ganados
-				}
-			};
+			client.query('select j.nombre as nombre,j.apellido from equipos e inner join jugadores j on e.nombre = j.equipo where j.equipo = $1::text', [req.params.equipo], (joinerr, joinres) =>
+			{
+				console.log('GET buscando equipo');
+									
+				respuesta = {
+					error: false,
+					codigo: 200,
+					mensaje: 'Todo salio bien',
+					equipo: {
+						nombre: res.rows[0].nombre,
+						pais: res.rows[0].pais,
+						creacion: res.rows[0].creacion,
+						logo: res.rows[0].logo,
+						ganados: res.rows[0].ganados,
+						jugadores: joinres.rows
+					}
+				};
+				_res.send(respuesta);
+
+			});
+
 		}
 		else
 		{
@@ -181,9 +189,10 @@ app.get('/equipos/:equipo', function(req, _res){
 				codigo: 404,
 				mensaje: 'equipo no encontrado',
 			};
+			_res.send(respuesta);
 
 		}
-		_res.send(respuesta);
+		
 	});
 
 });
@@ -412,6 +421,96 @@ app.delete('/jugadores', function(req, _res){
 			}
 		}
 		_res.send(respuesta);
+	});
+
+});
+
+//Metodo GET para las tranferencias
+app.get('/transferencias/:fecha', function(req, _res){
+	client.query('SELECT * FROM transferencias WHERE fecha=$1::date', [req.params.fecha], (err, res) =>
+	{
+		//si la fecha esta correcta
+		if(res.rows.length>0)
+		{
+			console.log('GET buscando transferencias');
+			console.log(err);
+
+			let respuesta = {
+				error: false,
+				codigo: 200,
+				mensaje: 'todo salio bien',
+				transferencias: {
+					jugadores: res.rows
+					/*nombre: res.rows[0].nombre,
+					apellido: res.rows[0].apellido,
+					equipo_inicial: '/equipo/' + res.rows[0].equipo_inicial,
+					equipo_final: '/equipo/' + res.rows[0].equipo_final,
+					fecha: res.rows[0].fecha*/
+				}
+			}
+			_res.send(respuesta);
+
+		}
+		else
+		{
+			console.log('GET No se encontro transferencias');
+			respuesta = {
+				error: true,
+				codigo: 404,
+				mensaje: 'transferencia no existe'
+			}
+
+		}
+
+	});
+});
+
+//Metodo para agregar transferencias
+app.post('/transferencias', function(req, _res){
+	client.query('INSERT INTO transferencias VALUES($1::text, $2::text, $3::text, $4::text, $5::date)', [req.body.nombre,req.body.apellido,req.body.equipo_inicial,req.body.equipo_final,req.body.fecha], (errorDB, insert_res) =>
+	{		
+		//si se inserto correctamente
+		if(errorDB)
+		{
+			console.log('Equipo de jugador no actualizado');
+			console.log(errorDB);
+			let respuesta =
+			{
+				error: true,
+				codigo: 404,
+				mensaje: 'Equipo no actualizado',
+				jugador: {
+					nombre: req.body.nombre,
+					apellido: req.body.apellido,
+					equipo: req.body.equipo_final
+				}
+			}
+			_res.send(respuesta);
+		}
+		else
+		{
+			client.query('UPDATE jugadores SET equipo=$1::text WHERE nombre=$2::text AND apellido=$3::text', [req.body.equipo_final,req.body.nombre,req.body.apellido], (err, res) =>
+			{
+				console.log('PUT actualizando equipo');
+				console.log(err);
+
+				let respuesta = 
+				{
+					error: false,
+					codigo: 200,
+					mensaje: 'Equipo de jugador actualizado',
+					jugador: {
+						nombre: req.body.nombre,
+						apellido: req.body.apellido,
+						equipo: req.body.equipo_final
+					}
+
+				}
+				_res.send(respuesta);
+
+			});
+		}
+
 	});
 
 });

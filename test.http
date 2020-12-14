@@ -31,22 +31,22 @@ POST http://localhost:3000/equipos HTTP/1.1
 Content-Type: application/json
 
 {
-    "nombre": "motagua",
-    "pais": "honduras",
-    "creacion": "1986-07-25",
-    "logo": "aguila azul",
-    "ganados": "17"  
+    "nombre": "Barcelona",
+    "pais": "españa",
+    "creacion": "1976-10-18",
+    "logo": "escudo con cruz roja",
+    "ganados": "25"     
     
 }
 ###Solicitud para actualizar un equipo
-PUT http://localhost:3000/equipos/motagua HTTP/1.1
+PUT http://localhost:3000/equipos/Barcelona HTTP/1.1
 Content-Type: application/json
 
 {
     "nombre": "motagua",
-    "pais": "panama",
-    "creacion": "1986-07-25",
-    "logo": "aguila roja",
+    "pais": "honduras",
+    "creacion": "1976-10-18",
+    "logo": "aguila azul",
     "ganados": "17"   
 }
 ### Solicitud para eliminar equipos
@@ -63,12 +63,14 @@ POST http://localhost:3000/jugadores HTTP/1.1
 Content-Type: application/json
 
 {
-    "nombre": "rubilio",
-    "apellido": "castillo",
-    "nacimiento": "1990-06-22",
-    "nacionalidad": "hondureño",
+    "nombre": "Gonzalo",
+    "apellido": "Klusener",
+    "nacimiento": "1987-03-10",
+    "nacionalidad": "argentino",
     "equipo": "motagua"
 }
+
+
 ### Solicitud para actualizar jugador
 PUT http://localhost:3000/jugadores/rubilio/castillo HTTP/1.1
 Content-Type: application/json
@@ -87,6 +89,19 @@ Content-Type: application/json
 {
     "nombre": "rubilio",
     "apellido": "castillo"
+}
+### Solicitud para obtener informacion de transferencias
+GET http://localhost:3000/transferencias/20201126 HTTP/1.1
+### Solicitud para agregar transferencias
+POST http://localhost:3000/transferencias HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "rubilio",
+    "apellido": "castillo",
+    "equipo_inicial": "FC Barcelona",
+    "equipo_final": "motagua",
+    "fecha": "2020-11-26"
 }
 ### Solicitud Raiz
 GET http://localhost:3000/ HTTP/1.1
